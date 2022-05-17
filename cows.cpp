@@ -26,6 +26,20 @@ bool is_devisible_on_input(int powered_value, int user_input)
 {
     return ((powered_value - 1) % user_input) == 0;
 }
+
+bool is_primitive_root(int tested_value, int root_of)
+{
+    if( not is_devisible_on_input(pow(tested_value, root_of - 1), root_of)) {
+        return false;
+    }
+    for(int power = 1; power <= root_of - 2; power++) {
+        if(is_devisible_on_input(pow(tested_value, power), root_of)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 int main(int argc, char** argv)
 {
     //handle correct input
@@ -59,19 +73,7 @@ int main(int argc, char** argv)
     //main logic
     int amount_of_primitive_roots = 0;
     for(int value_challenger = 1; value_challenger < inputted_number_p; value_challenger++) {
-        int first_powered = pow(value_challenger, inputted_number_p - 1);
-        if( not is_devisible_on_input(first_powered, inputted_number_p)) {
-            continue;
-        }
-        bool is_valid = true;
-        for(int power = 1; power <= inputted_number_p - 2; power++) {
-            if(is_devisible_on_input(pow(value_challenger, power), inputted_number_p)) {
-                is_valid = false;
-                break;
-            }
-        }
-        if (is_valid)
-        {
+        if (is_primitive_root(value_challenger, inputted_number_p)) {
             if(amount_of_primitive_roots == 0) {
                 std::cout <<"primitive roots are: ";
             }
